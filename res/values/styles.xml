@@ -6,6 +6,8 @@
         name="Theme.Light"
         parent="android:Theme.Holo.Light.DarkActionBar" >
         <item name="android:windowBackground">@color/app_background_light</item>
+        <item name="background_card">@drawable/background_card_light</item>
+        <item name="background_card_pressed">@drawable/background_card_pressed_light</item>
     </style>
 
     <style
@@ -13,10 +15,12 @@
         parent="android:Theme.Holo" >
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:windowBackground">@color/app_background_dark</item>
+        <item name="background_card">@drawable/background_card_dark</item>
+        <item name="background_card_pressed">@drawable/background_card_pressed_dark</item>
     </style>
 
     <style name="ActionBar"
-        parent="android:Widget.Holo.ActionBar.Solid">
+        parent="android:Widget.Holo.ActionBar.Solid" >
         <item name="android:background">#222</item>
     </style>
 
