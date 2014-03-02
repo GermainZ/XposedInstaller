@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style
+        name="Theme.Light"
+        parent="android:Theme.Holo.Light.DarkActionBar" >
+        <item name="android:windowBackground">@color/app_background_light</item>
+    </style>
+
+    <style
+        name="Theme.Dark"
+        parent="android:Theme.Holo" >
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowBackground">@color/app_background_dark</item>
+    </style>
+
+    <style name="ActionBar"
+        parent="android:Widget.Holo.ActionBar.Solid">
+        <item name="android:background">#222</item>
+    </style>
+
+</resources>
