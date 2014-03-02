@@ -88,6 +88,7 @@
     <string name="menuReload">Reload</string>
     <string name="changes">Changes:</string>
     <string name="description_page">Description</string>
+    <string name="module_latestVersion">Latest version:</string>
     <string name="versions_page">Versions</string>
     <string name="branch_display">(%s branch)</string>
     <string name="download_author">by %s</string>

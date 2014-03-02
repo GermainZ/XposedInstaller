@@ -14,22 +14,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.ModuleGroup;
+import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.AnimatorUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
+import de.robv.android.xposed.installer.widget.DownloadView;
 
 public class DownloadDetailsFragment extends Fragment {
 	public static final String ARGUMENT_PACKAGE = "package";
 
 	public static DownloadDetailsFragment newInstance(String packageName) {
 		DownloadDetailsFragment fragment = new DownloadDetailsFragment();
-		
+
 		Bundle args = new Bundle();
 		args.putString(ARGUMENT_PACKAGE, packageName);
 		fragment.setArguments(args);
-		
+
 		return fragment;
 	}
 
@@ -59,7 +63,44 @@ public class DownloadDetailsFragment extends Fragment {
 			author.setText(getString(R.string.download_author, module.author));
 		else
 			author.setText(R.string.download_unknown_author);
-		
+
+		TextView txtVersion = (TextView) view.findViewById(R.id.txtVersion);
+		TextView txtBranch = (TextView) view.findViewById(R.id.txtBranch);
+		DownloadView downloadView = (DownloadView) view.findViewById(R.id.downloadView);
+		TextView txtChangesTitle = (TextView) view.findViewById(R.id.txtChangesTitle);
+		TextView txtChanges = (TextView) view.findViewById(R.id.txtChanges);
+
+		ModuleVersion latestVersion = module.versions.get(0);
+
+		txtVersion.setText(latestVersion.name);
+		if (latestVersion.branch != null && !latestVersion.branch.isEmpty()) {
+			txtBranch.setText(getResources().getString(R.string.branch_display, latestVersion.branch));
+			txtBranch.setVisibility(View.VISIBLE);
+		} else {
+			txtBranch.setVisibility(View.GONE);
+		}
+
+		downloadView.setUrl(latestVersion.downloadLink);
+		downloadView.setTitle(module.name);
+		downloadView.setDownloadFinishedCallback(new DownloadModuleCallback(latestVersion));
+
+		if (latestVersion.changelog != null && !latestVersion.changelog.isEmpty()) {
+			txtChangesTitle.setVisibility(View.VISIBLE);
+			txtChanges.setVisibility(View.VISIBLE);
+
+			if (latestVersion.changelogIsHtml) {
+				txtChanges.setText(RepoParser.parseSimpleHtml(latestVersion.changelog));
+				txtChanges.setMovementMethod(LinkMovementMethod.getInstance());
+			} else {
+				txtChanges.setText(latestVersion.changelog);
+				txtChanges.setMovementMethod(null);
+			}
+
+		} else {
+			txtChangesTitle.setVisibility(View.GONE);
+			txtChanges.setVisibility(View.GONE);
+		}
+
 		TextView description = (TextView) view.findViewById(R.id.download_description);
 		if (module.description != null) {
 			if (module.descriptionIsHtml) {
