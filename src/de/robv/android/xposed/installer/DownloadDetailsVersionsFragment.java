@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.ModuleGroup;
@@ -19,12 +21,14 @@ import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
+import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
 public class DownloadDetailsVersionsFragment extends ListFragment {
 
 	public static final String ARGUMENT_PACKAGE = "package";
 	private static Module mModule;
 	private static VersionsAdapter mAdapter;
+	private ArrayList<Integer> mExpanded = new ArrayList<Integer>();
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 		TextView txtBranch;
 		DownloadView downloadView;
 		TextView txtChangesTitle;
-		TextView txtChanges;
+		ExpandableTextView txtChanges;
 	}
 
 	private class VersionsAdapter extends ArrayAdapter<ModuleVersion> {
@@ -74,7 +78,7 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View view = convertView;
 			if (view == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,11 +88,11 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 				viewHolder.txtBranch = (TextView) view.findViewById(R.id.txtBranch);
 				viewHolder.downloadView = (DownloadView) view.findViewById(R.id.downloadView);
 				viewHolder.txtChangesTitle = (TextView) view.findViewById(R.id.txtChangesTitle);
-				viewHolder.txtChanges = (TextView) view.findViewById(R.id.txtChanges);
+				viewHolder.txtChanges = (ExpandableTextView) view.findViewById(R.id.txtChanges);
 				view.setTag(viewHolder);
 			}
 
-			ViewHolder holder = (ViewHolder) view.getTag();
+			final ViewHolder holder = (ViewHolder) view.getTag();
 			ModuleVersion item = (ModuleVersion) getItem(position);
 
 			holder.txtVersion.setText(item.name);
@@ -114,6 +118,27 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 					holder.txtChanges.setText(item.changelog);
 					holder.txtChanges.setMovementMethod(null);
 				}
+
+				// Collapse/Expand the view depending on whether it has been expanded before or not
+				holder.txtChanges.post(new Runnable() {
+					@Override
+					public void run() {
+						holder.txtChanges.collapseView(!mExpanded.contains(position));
+					}
+				});
+
+				holder.txtChanges.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (mExpanded.contains(position)) {
+							holder.txtChanges.collapseView(true);
+							mExpanded.remove((Integer) position);
+						} else {
+							holder.txtChanges.collapseView(false);
+							mExpanded.add(position);
+						}
+					}
+				});
 
 			} else {
 				holder.txtChangesTitle.setVisibility(View.GONE);

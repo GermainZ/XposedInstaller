@@ -23,9 +23,11 @@ import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.AnimatorUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
+import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
 public class DownloadDetailsFragment extends Fragment {
 	public static final String ARGUMENT_PACKAGE = "package";
+	private boolean expanded = false;
 
 	public static DownloadDetailsFragment newInstance(String packageName) {
 		DownloadDetailsFragment fragment = new DownloadDetailsFragment();
@@ -68,7 +70,7 @@ public class DownloadDetailsFragment extends Fragment {
 		TextView txtBranch = (TextView) view.findViewById(R.id.txtBranch);
 		DownloadView downloadView = (DownloadView) view.findViewById(R.id.downloadView);
 		TextView txtChangesTitle = (TextView) view.findViewById(R.id.txtChangesTitle);
-		TextView txtChanges = (TextView) view.findViewById(R.id.txtChanges);
+		final ExpandableTextView txtChanges = (ExpandableTextView) view.findViewById(R.id.txtChanges);
 
 		ModuleVersion latestVersion = module.versions.get(0);
 
@@ -95,6 +97,20 @@ public class DownloadDetailsFragment extends Fragment {
 				txtChanges.setText(latestVersion.changelog);
 				txtChanges.setMovementMethod(null);
 			}
+
+			txtChanges.post(new Runnable() {
+				@Override
+				public void run() {
+					txtChanges.collapseView(true);
+				}
+			});
+			txtChanges.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					txtChanges.collapseView(expanded);
+					expanded = !expanded;
+				}
+			});
 
 		} else {
 			txtChangesTitle.setVisibility(View.GONE);

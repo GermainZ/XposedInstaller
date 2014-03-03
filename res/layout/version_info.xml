@@ -45,7 +45,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
-    <TextView
+    <de.robv.android.xposed.installer.widget.ExpandableTextView
         android:id="@+id/txtChanges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
