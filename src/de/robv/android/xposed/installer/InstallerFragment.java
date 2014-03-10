@@ -59,6 +59,10 @@ public class InstallerFragment extends Fragment {
 	private static final int INSTALL_MODE_RECOVERY_AUTO = 1;
 	private static final int INSTALL_MODE_RECOVERY_MANUAL = 2;
 
+	private static final int COLOR_RED = Color.parseColor("#FF4444");
+	private static final int COLOR_GREEN = Color.parseColor("#99CC00");
+	private static final int COLOR_ORANGE = Color.parseColor("#FFBB33");
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -116,7 +120,7 @@ public class InstallerFragment extends Fragment {
 			isCompatible = checkCompatibility();
 			if (isCompatible) {
 				txtInstallError.setText(String.format(getString(R.string.not_tested_but_compatible), Build.VERSION.SDK_INT));
-				txtInstallError.setTextColor(Color.YELLOW);
+				txtInstallError.setTextColor(COLOR_ORANGE);
 				txtInstallError.setVisibility(View.VISIBLE);
 			}
 		}
@@ -143,7 +147,7 @@ public class InstallerFragment extends Fragment {
 			if (!mCompatibilityErrors.isEmpty())
 				errorText += "\n\n" + TextUtils.join("\n", mCompatibilityErrors);
 			txtInstallError.setText(errorText);
-			txtInstallError.setTextColor(Color.RED);
+			txtInstallError.setTextColor(COLOR_RED);
 			txtInstallError.setVisibility(View.VISIBLE);
 			btnInstall.setEnabled(false);
 		}
@@ -281,14 +285,14 @@ public class InstallerFragment extends Fragment {
 		txtJarLatestVersion.setText(versionToText(jarLatestVersion));
 
 		if (appProcessInstalledVersion < appProcessLatestVersion)
-			txtAppProcessInstalledVersion.setTextColor(Color.RED);
+			txtAppProcessInstalledVersion.setTextColor(COLOR_RED);
 		else
-			txtAppProcessInstalledVersion.setTextColor(Color.GREEN);
+			txtAppProcessInstalledVersion.setTextColor(COLOR_GREEN);
 
 		if (jarInstalledVersion < jarLatestVersion)
-			txtJarInstalledVersion.setTextColor(Color.RED);
+			txtJarInstalledVersion.setTextColor(COLOR_RED);
 		else
-			txtJarInstalledVersion.setTextColor(Color.GREEN);
+			txtJarInstalledVersion.setTextColor(COLOR_GREEN);
 	}
 
 	private String versionToText(int version) {
