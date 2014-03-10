@@ -47,6 +47,13 @@ public class DownloadDetailsFragment extends Fragment {
 		Bundle args = getArguments();
 		Module module = args.getParcelable("module");
 
+		if (module != null)
+			setContent(view, module, inflater);
+
+		return view;
+	}
+
+	private void setContent(View view, Module module, LayoutInflater inflater) {
 		TextView title = (TextView) view.findViewById(R.id.download_title);
 		title.setText(module.name);
 		getActivity().getActionBar().setTitle(R.string.tabDownload);
@@ -132,13 +139,20 @@ public class DownloadDetailsFragment extends Fragment {
 
 			moreInfoContainer.addView(moreInfoView);
 		}
-
-		return view;
 	}
 
 	@Override
 	public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
 		return AnimatorUtil.createSlideAnimation(this, nextAnim);
+	}
+
+	public void update(final Module module) {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				setContent(getView(), module, LayoutInflater.from(getActivity()));
+			}
+		});
 	}
 
 }

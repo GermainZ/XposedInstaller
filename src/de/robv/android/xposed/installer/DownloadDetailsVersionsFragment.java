@@ -35,10 +35,11 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 
 		Module module = args.getParcelable("module");
 
-		mModuleName = module.name;
-
 		mAdapter = new VersionsAdapter(getActivity());
-		mAdapter.addAll(module.versions);
+		if (module != null) {
+			mModuleName = module.name;
+			mAdapter.addAll(module.versions);
+		}
 		setListAdapter(mAdapter);
 
 		getListView().setDivider(null);
@@ -140,6 +141,18 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 
 			return view;
 		}
+	}
+
+	public void update(final Module module) {
+		mModuleName = module.name;
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				mAdapter.clear();
+				mAdapter.addAll(module.versions);
+				mAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 }

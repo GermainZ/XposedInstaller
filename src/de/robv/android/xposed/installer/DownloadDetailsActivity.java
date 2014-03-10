@@ -8,18 +8,22 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.util.RepoLoader;
 
-public class DownloadDetailsActivity extends XposedDropdownNavActivity {
+public class DownloadDetailsActivity extends XposedDropdownNavActivity implements RepoLoader.RepoListener {
 
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
 	private String[] mPages;
 	private String mPackageName;
 	private Bundle args;
+
+	private DownloadDetailsFragment downloadDescriptionFragment;
+	private DownloadDetailsVersionsFragment downloadVersionsFragment;
 
 	private static final int DOWNLOAD_DESCRIPTION = 0;
 	private static final int DOWNLOAD_VERSIONS = 1;
@@ -30,10 +34,18 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity {
 
 		setContentView(R.layout.activity_download_details);
 
+		RepoLoader.getInstance().addListener(this, false);
+
 		mPackageName = getIntent().getData().getSchemeSpecificPart();
 
 		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(mPackageName);
-		Module module = moduleGroup.getModule();
+		Module module = null;
+		if (moduleGroup != null) {
+			module = moduleGroup.getModule();
+		} else {
+			RepoLoader.getInstance().triggerReload(true);
+			Toast.makeText(this, getString(R.string.download_repo_reload), Toast.LENGTH_LONG).show();
+		}
 
 		args = new Bundle();
 		args.putParcelable("module", module);
@@ -78,9 +90,11 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity {
 		public Fragment getItem(int position) {
 			switch (position) {
 				case DOWNLOAD_DESCRIPTION:
-					return DownloadDetailsFragment.newInstance(args);
+					downloadDescriptionFragment = DownloadDetailsFragment.newInstance(args);
+					return downloadDescriptionFragment;
 				case DOWNLOAD_VERSIONS:
-					return DownloadDetailsVersionsFragment.newInstance(args);
+					downloadVersionsFragment = DownloadDetailsVersionsFragment.newInstance(args);
+					return downloadVersionsFragment;
 				default:
 					return null;
 			}
@@ -95,6 +109,19 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity {
 		public CharSequence getPageTitle(int position) {
 			return mPages[position];
 		}
+	}
+
+	@Override
+	public void onRepoReloaded(RepoLoader repoLoader) {
+		Module module = repoLoader.getModuleGroup(mPackageName).getModule();
+		downloadVersionsFragment.update(module);
+		downloadDescriptionFragment.update(module);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		RepoLoader.getInstance().removeListener(this);
 	}
 
 }
