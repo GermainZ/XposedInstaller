@@ -17,25 +17,18 @@ import android.widget.TextView;
 
 import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
-import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.AnimatorUtil;
-import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
 import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
 public class DownloadDetailsFragment extends Fragment {
-	public static final String ARGUMENT_PACKAGE = "package";
 	private boolean expanded = false;
 
-	public static DownloadDetailsFragment newInstance(String packageName) {
+	public static DownloadDetailsFragment newInstance(Bundle args) {
 		DownloadDetailsFragment fragment = new DownloadDetailsFragment();
-
-		Bundle args = new Bundle();
-		args.putString(ARGUMENT_PACKAGE, packageName);
 		fragment.setArguments(args);
-
 		return fragment;
 	}
 
@@ -52,9 +45,7 @@ public class DownloadDetailsFragment extends Fragment {
 		final View view = inflater.inflate(R.layout.download_details, container, false);
 
 		Bundle args = getArguments();
-		String packageName = args.getString(ARGUMENT_PACKAGE);
-		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(packageName);
-		Module module = moduleGroup.getModule();
+		Module module = args.getParcelable("module");
 
 		TextView title = (TextView) view.findViewById(R.id.download_title);
 		title.setText(module.name);

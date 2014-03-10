@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Pair;
 
-public class Module {
+public class Module implements Parcelable {
 	public final Repository repository;
 	public String packageName;
 	public String name;
@@ -23,5 +25,13 @@ public class Module {
 	
 	/*package*/ Module(Repository repository) {
 		this.repository = repository;
+	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel out, int flags) {
+		// We can leave this empty as we're only using the Parcelable in a Bundle.
 	}
 }

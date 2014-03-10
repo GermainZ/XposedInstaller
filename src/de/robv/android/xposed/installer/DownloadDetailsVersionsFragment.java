@@ -16,17 +16,14 @@ import java.util.ArrayList;
 
 import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
-import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
-import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
 import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
 public class DownloadDetailsVersionsFragment extends ListFragment {
 
-	public static final String ARGUMENT_PACKAGE = "package";
-	private static Module mModule;
+	private static String mModuleName;
 	private static VersionsAdapter mAdapter;
 	private ArrayList<Integer> mExpanded = new ArrayList<Integer>();
 
@@ -36,12 +33,12 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 
 		Bundle args = getArguments();
 
-		String mPackageName = args.getString(ARGUMENT_PACKAGE);
-		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(mPackageName);
-		mModule = moduleGroup.getModule();
+		Module module = args.getParcelable("module");
+
+		mModuleName = module.name;
 
 		mAdapter = new VersionsAdapter(getActivity());
-		mAdapter.addAll(mModule.versions);
+		mAdapter.addAll(module.versions);
 		setListAdapter(mAdapter);
 
 		getListView().setDivider(null);
@@ -53,13 +50,9 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 
 	}
 
-	public static DownloadDetailsVersionsFragment newInstance(String packageName) {
+	public static DownloadDetailsVersionsFragment newInstance(Bundle args) {
 		DownloadDetailsVersionsFragment fragment = new DownloadDetailsVersionsFragment();
-
-		Bundle args = new Bundle();
-		args.putString(ARGUMENT_PACKAGE, packageName);
 		fragment.setArguments(args);
-
 		return fragment;
 	}
 
@@ -104,7 +97,7 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 			}
 
 			holder.downloadView.setUrl(item.downloadLink);
-			holder.downloadView.setTitle(mModule.name);
+			holder.downloadView.setTitle(mModuleName);
 			holder.downloadView.setDownloadFinishedCallback(new DownloadModuleCallback(item));
 
 			if (item.changelog != null && !item.changelog.isEmpty()) {
