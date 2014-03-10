@@ -128,6 +128,7 @@ public class DownloadDetailsFragment extends Fragment {
 		}
 
 		ViewGroup moreInfoContainer = (ViewGroup) view.findViewById(R.id.download_moreinfo_container);
+		moreInfoContainer.removeAllViews();
 		for (Pair<String,String> moreInfoEntry : module.moreInfo) {
 			TextView moreInfoView = (TextView) inflater.inflate(R.layout.download_moreinfo, moreInfoContainer, false);
 
