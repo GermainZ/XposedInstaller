@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- General/various strings -->
     <string name="app_name">Xposed Installer</string>
@@ -125,6 +125,11 @@
     <string name="logs_load_failed">Log konnte nicht gelesen werden:</string>
     <string name="logs_save_failed">Log konnte nicht auf der SD-Karte gespeichert werden:</string>
     <string name="sdcard_not_writable">SD-Karte wurde nicht gefunden oder ist nicht beschreibbar</string>
+    <string name="log_too_large">Log ist größer als %1$,d kB, die ersten %2$,d kB wurden übersprungen</string>
+    <string name="menuClearLog">Log jetzt leeren</string>
+    <string name="logs_cleared">Log wurde geleert</string>
+    <string name="logs_clear_failed">Konnte Log nicht leeren:</string>
+    <string name="log_is_empty">Log ist leer</string>
 
     <!-- About tab -->
     <string name="about_developers_label">Hauptentwickler:</string>
