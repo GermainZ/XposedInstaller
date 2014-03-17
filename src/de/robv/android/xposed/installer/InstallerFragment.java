@@ -20,14 +20,13 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -214,8 +213,10 @@ public class InstallerFragment extends Fragment {
 
 		SpannableStringBuilder installModeText = new SpannableStringBuilder(getString(R.string.settings_install_mode));
 		installModeText.append(":\n");
-		installModeText.setSpan(new StyleSpan(Typeface.BOLD), 0, installModeText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+		final int titleLength = installModeText.length();
+		installModeText.setSpan(new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Holo_Medium), 0, titleLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 		installModeText.append(getInstallModeText());
+		installModeText.setSpan(new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Holo_Small), titleLength, installModeText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 		txtInstallMode.setText(installModeText);
 	}
 
