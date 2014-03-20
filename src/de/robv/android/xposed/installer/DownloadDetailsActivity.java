@@ -36,8 +36,6 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity implement
 
 		setContentView(R.layout.activity_download_details);
 
-		RepoLoader.getInstance().addListener(this, false);
-
 		mPackageName = getIntent().getData().getSchemeSpecificPart();
 
 		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(mPackageName);
@@ -59,6 +57,12 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity implement
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		RepoLoader.getInstance().addListener(this, false);
 	}
 
 	@Override
@@ -131,8 +135,8 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity implement
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+	protected void onPause() {
+		super.onPause();
 		RepoLoader.getInstance().removeListener(this);
 	}
 
