@@ -129,9 +129,21 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity implement
 
 	@Override
 	public void onRepoReloaded(RepoLoader repoLoader) {
-		Module module = repoLoader.getModuleGroup(mPackageName).getModule();
-		downloadVersionsFragment.update(module);
-		downloadDescriptionFragment.update(module);
+		ModuleGroup moduleGroup = repoLoader.getModuleGroup(mPackageName);
+		if (moduleGroup != null) {
+			Module module = moduleGroup.getModule();
+			downloadVersionsFragment.update(module);
+			downloadDescriptionFragment.update(module);
+		} else {
+			// This can happen if the module has been removed from the repository.
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(DownloadDetailsActivity.this, getString(R.string.download_repo_removed), Toast.LENGTH_LONG).show();
+				}
+			});
+			finish();
+		}
 	}
 
 	@Override
