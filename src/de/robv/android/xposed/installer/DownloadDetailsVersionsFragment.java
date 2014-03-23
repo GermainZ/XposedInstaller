@@ -32,7 +32,6 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 
 		Bundle args = getArguments();
-
 		Module module = args.getParcelable("module");
 
 		mAdapter = new VersionsAdapter(getActivity());
