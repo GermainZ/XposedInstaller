@@ -3,5 +3,5 @@
 
 -libraryjars libs/android-support-v13.jar
 -libraryjars lib/AndroidHiddenAPI.jar
--libraryjars libs/libsuperuser-b1d6c2.jar
+-libraryjars libs/libsuperuser-185868.jar
 -libraryjars libs/StickyListHeaders-d7f6fc.jar
