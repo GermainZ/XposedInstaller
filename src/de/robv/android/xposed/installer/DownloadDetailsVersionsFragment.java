@@ -16,8 +16,10 @@ import java.util.ArrayList;
 
 import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
+import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
+import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
 import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
@@ -32,10 +34,13 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 
 		Bundle args = getArguments();
-		Module module = args.getParcelable("module");
+
+		String packageName = args.getString("packageName");
+		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(packageName);
 
 		mAdapter = new VersionsAdapter(getActivity());
-		if (module != null) {
+		if (moduleGroup != null) {
+			Module module = moduleGroup.getModule();
 			mModuleName = module.name;
 			mAdapter.addAll(module.versions);
 		}

@@ -11,8 +11,7 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.util.Log;
-
-import de.robv.android.xposed.installer.util.ParcelablePair;
+import android.util.Pair;
 
 public class RepoParser {
 	public final static String TAG = "XposedRepoParser";
@@ -84,7 +83,7 @@ public class RepoParser {
 				String label = parser.getAttributeValue(NS, "label");
 				String role = parser.getAttributeValue(NS, "role");
 				String value = parser.nextText();
-				module.moreInfo.add(new ParcelablePair(label, value));
+				module.moreInfo.add(new Pair<String, String>(label, value));
 
 				if (role != null && role.contains("support"))
 					module.support = value;

@@ -39,16 +39,13 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity implement
 		mPackageName = getIntent().getData().getSchemeSpecificPart();
 
 		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(mPackageName);
-		Module module = null;
-		if (moduleGroup != null) {
-			module = moduleGroup.getModule();
-		} else {
+		if (moduleGroup == null) {
 			RepoLoader.getInstance().triggerReload(true);
 			Toast.makeText(this, getString(R.string.download_repo_reload), Toast.LENGTH_LONG).show();
 		}
 
 		args = new Bundle();
-		args.putParcelable("module", module);
+		args.putString("packageName", mPackageName);
 
 		mPages = new String[]{getString(R.string.description_page), getString(R.string.versions_page)};
 		mPager = (ViewPager) findViewById(R.id.download_pager);

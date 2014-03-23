@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import android.widget.TextView;
 
 import de.robv.android.xposed.installer.callback.DownloadModuleCallback;
 import de.robv.android.xposed.installer.repo.Module;
+import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.AnimatorUtil;
-import de.robv.android.xposed.installer.util.ParcelablePair;
+import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.widget.DownloadView;
 import de.robv.android.xposed.installer.widget.ExpandableTextView;
 
@@ -45,10 +47,14 @@ public class DownloadDetailsFragment extends Fragment {
 		final View view = inflater.inflate(R.layout.download_details, container, false);
 
 		Bundle args = getArguments();
-		Module module = args.getParcelable("module");
 
-		if (module != null)
+		String packageName = args.getString("packageName");
+		ModuleGroup moduleGroup = RepoLoader.getInstance().waitForFirstLoadFinished().getModuleGroup(packageName);
+
+		if (moduleGroup != null) {
+			Module module = moduleGroup.getModule();
 			setContent(view, module, inflater);
+		}
 
 		return view;
 	}
@@ -129,7 +135,7 @@ public class DownloadDetailsFragment extends Fragment {
 
 		ViewGroup moreInfoContainer = (ViewGroup) view.findViewById(R.id.download_moreinfo_container);
 		moreInfoContainer.removeAllViews();
-		for (ParcelablePair moreInfoEntry : module.moreInfo) {
+		for (Pair<String,String> moreInfoEntry : module.moreInfo) {
 			TextView moreInfoView = (TextView) inflater.inflate(R.layout.download_moreinfo, moreInfoContainer, false);
 
 			SpannableStringBuilder ssb = new SpannableStringBuilder(moreInfoEntry.first);
