@@ -210,14 +210,7 @@ public class InstallerFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		SpannableStringBuilder installModeText = new SpannableStringBuilder(getString(R.string.settings_install_mode));
-		installModeText.append(":\n");
-		final int titleLength = installModeText.length();
-		installModeText.setSpan(new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Holo_Medium), 0, titleLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-		installModeText.append(getInstallModeText());
-		installModeText.setSpan(new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_Holo_Small), titleLength, installModeText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-		txtInstallMode.setText(installModeText);
+		txtInstallMode.setText(getInstallModeText());
 	}
 
 	@Override

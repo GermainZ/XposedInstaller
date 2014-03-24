@@ -25,6 +25,7 @@
     <string name="tabAboutDescription">Learn about the people who created Xposed, where to get support for this app etc.</string>
 
     <!-- Installer tab -->
+    <string name="framework">Framework</string>
     <string name="install">Install/Update</string>
     <string name="uninstall">Uninstall</string>
     <string name="installedVersion">active</string>
