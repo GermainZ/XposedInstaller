@@ -63,13 +63,16 @@ public class SettingsFragment extends PreferenceFragment {
 		});
 
 		CheckBoxPreference prefUseDarkTheme = (CheckBoxPreference) findPreference("use_dark_theme");
-		prefUseDarkTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+		CheckBoxPreference prefUseBlackBg = (CheckBoxPreference) findPreference("use_black_bg");
+		OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				getActivity().recreate();
 				return true;
 			}
-		});
+		};
+		prefUseDarkTheme.setOnPreferenceChangeListener(listener);
+		prefUseBlackBg.setOnPreferenceChangeListener(listener);
 
 	}
 }

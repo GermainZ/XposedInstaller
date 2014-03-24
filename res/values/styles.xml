@@ -21,6 +21,11 @@
         <item name="pager_tab_strip_bg">@color/pager_tab_strip_bg_dark</item>
     </style>
 
+    <style
+        name="Theme.Black" parent="Theme.Dark" >
+        <item name="android:windowBackground">@color/app_background_black</item>
+    </style>
+
     <style name="ActionBar"
         parent="android:Widget.Holo.ActionBar.Solid" >
         <item name="android:background">#222</item>

@@ -126,6 +126,8 @@
     <string name="settings_group_app">Application</string>
     <string name="settings_enable_dark_theme">Dark theme</string>
     <string name="settings_enable_dark_theme_summary">Use a dark theme instead of the default light theme.</string>
+    <string name="settings_use_black_background">Use black background</string>
+    <string name="settings_use_black_background_summary">Use a pure black background, useful for AMOLED screens.</string>
 
     <!--  Logs tab  -->
     <string name="logs_load_failed">Could not read log:</string>

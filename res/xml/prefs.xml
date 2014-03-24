@@ -30,6 +30,10 @@
             android:key="use_dark_theme"
             android:title="@string/settings_enable_dark_theme"
             android:summary="@string/settings_enable_dark_theme_summary" />
+        <CheckBoxPreference
+            android:key="use_black_bg"
+            android:title="@string/settings_use_black_background"
+            android:summary="@string/settings_use_black_background_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory

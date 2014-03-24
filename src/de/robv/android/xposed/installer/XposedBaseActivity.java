@@ -9,14 +9,20 @@ public abstract class XposedBaseActivity extends Activity {
 	public boolean leftActivityWithSlideAnim = false;
 
 	private boolean mDarkThemeEnabled;
+	private boolean mBlackBackground;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceBundle) {
 		super.onCreate(savedInstanceBundle);
 
 		mDarkThemeEnabled = XposedApp.getPreferences().getBoolean("use_dark_theme", false);
-		if (mDarkThemeEnabled)
-			setTheme(R.style.Theme_Dark);
+		mBlackBackground = XposedApp.getPreferences().getBoolean("use_black_bg", false);
+		if (mDarkThemeEnabled) {
+			if (mBlackBackground)
+				setTheme(R.style.Theme_Black);
+			else
+				setTheme(R.style.Theme_Dark);
+		}
 	}
 
 	@Override
@@ -24,8 +30,10 @@ public abstract class XposedBaseActivity extends Activity {
 		super.onResume();
 
 		boolean darkThemeEnabled = XposedApp.getPreferences().getBoolean("use_dark_theme", false);
-		if (mDarkThemeEnabled != darkThemeEnabled) {
+		boolean blackBackground = XposedApp.getPreferences().getBoolean("use_black_bg", false);
+		if ((mDarkThemeEnabled != darkThemeEnabled) || (mBlackBackground != blackBackground)) {
 			mDarkThemeEnabled = darkThemeEnabled;
+			mBlackBackground = blackBackground;
 			recreate();
 		}
 
