@@ -109,13 +109,10 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 				holder.txtChangesTitle.setVisibility(View.VISIBLE);
 				holder.txtChanges.setVisibility(View.VISIBLE);
 
-				if (item.changelogIsHtml) {
+				if (item.changelogIsHtml)
 					holder.txtChanges.setText(RepoParser.parseSimpleHtml(item.changelog));
-					holder.txtChanges.setMovementMethod(LinkMovementMethod.getInstance());
-				} else {
+				else
 					holder.txtChanges.setText(item.changelog);
-					holder.txtChanges.setMovementMethod(null);
-				}
 
 				// Collapse/Expand the view depending on whether it has been expanded before or not
 				holder.txtChanges.post(new Runnable() {

@@ -26,8 +26,7 @@ public class ExpandableTextView extends LinearLayout {
 
 		textView.setMaxLines(MAX_LINES);
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.gravity = Gravity.RIGHT;
 		imageView.setLayoutParams(layoutParams);
 		imageView.setImageResource(R.drawable.ic_expand);
@@ -38,17 +37,6 @@ public class ExpandableTextView extends LinearLayout {
 
 	public void setText(CharSequence text) {
 		textView.setText(text);
-	}
-
-	public void setMovementMethod(MovementMethod method) {
-		textView.setMovementMethod(method);
-	}
-
-	/** The ImageView would normally handle the click, we set the OnClickListener to both the ImageView
-	 * and the TextView so that we can click anywhere to expand/collapse */
-	public void setOnClickListener(OnClickListener listener) {
-		textView.setOnClickListener(listener);
-		imageView.setOnClickListener(listener);
 	}
 
 	/** Collapses or expands the view if necessary.
