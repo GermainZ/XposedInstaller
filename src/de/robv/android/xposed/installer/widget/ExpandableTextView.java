@@ -1,7 +1,7 @@
 package de.robv.android.xposed.installer.widget;
 
 import android.content.Context;
-import android.text.method.MovementMethod;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.ImageView;
@@ -29,7 +29,10 @@ public class ExpandableTextView extends LinearLayout {
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.gravity = Gravity.RIGHT;
 		imageView.setLayoutParams(layoutParams);
-		imageView.setImageResource(R.drawable.ic_expand);
+
+		TypedArray styledAttributes = context.obtainStyledAttributes(new int[] {R.attr.expand_drawable});
+		imageView.setImageDrawable(styledAttributes.getDrawable(0));
+		styledAttributes.recycle();
 
 		addView(textView);
 		addView(imageView);

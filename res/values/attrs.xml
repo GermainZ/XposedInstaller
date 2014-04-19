@@ -8,5 +8,7 @@
         format="reference" />
     <attr name="pager_tab_strip_bg"
         format="reference" />
+    <attr name="expand_drawable"
+          format="reference" />
 
 </resources>
