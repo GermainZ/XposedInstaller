@@ -109,7 +109,6 @@ public class DownloadDetailsFragment extends Fragment {
 			txtChanges.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Log.d("Xposed", "Hello!");
 					txtChanges.collapseView(expanded);
 					expanded = !expanded;
 				}
